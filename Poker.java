@@ -44,8 +44,8 @@ public class Poker {
 //		System.out.println(turnHands);
 //		System.out.println(riverHands);
 //		System.out.println(wholeCards);
-		RunGameLoop.runGame(1);
-		BufferedImageDisplay.createImage();
+		
+		BufferedImageDisplay.shuffleDealImage();
 		
 
 	}

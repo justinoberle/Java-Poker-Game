@@ -81,9 +81,7 @@ public class RunGameLoop {
 		for (int i = 0; i < iterations; i++) {
 			hand.reset();
 			Poker.setShuffledDeck();
-			System.out.println(hand);
 			hand.setWholeCards();
-			System.out.println(hand.getWholeCards());
 			hand.setFlop();
 			hand.setTurn();
 			hand.setRiver();

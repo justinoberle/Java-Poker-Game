@@ -113,7 +113,53 @@ public class BufferedImageDisplay {
 		return playerCardPath;
 	}
 	
-	public static void createImage() {
+	private JFrame frame = new JFrame("Live Poker Game");
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+	public static void shuffleDealImage() {
+		BufferedImageDisplay frameObject = new BufferedImageDisplay();
+		JFrame frame = frameObject.getFrame();
+		BufferedImageDisplay table2 = new BufferedImageDisplay();
+
+		BufferedImage table = table2.getImageFromString("C:\\Java_Programs\\Images\\Table.png");
+
+		JLabel Jtable = new JLabel(new StretchIcon(table));
+		// Create JFrame and add everything to it to display
+		
+
+		JButton shuffleDealButton = new JButton();
+
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setContentPane(Jtable);
+	    frame.setBackground(Color.white);
+	    frame.getContentPane().setPreferredSize(new Dimension(width, height));
+	    frame.pack();
+	    frame.setLocationRelativeTo(null);
+
+	    shuffleDealButton.setLocation(340, 240);
+	    shuffleDealButton.setSize(250, 40);
+	    shuffleDealButton.setFont(new Font("Arial", Font.BOLD, 20));
+	    shuffleDealButton.setText("Shuffle up and Deal!");
+	    frame.add(shuffleDealButton);
+	  	frame.setResizable(false);
+	  	frame.setLayout(null);
+	  	frame.setVisible(true);
+	    shuffleDealButton.addActionListener(new ActionListener()
+	    {
+	      public void actionPerformed(ActionEvent e)
+	      {
+	    	  RunGameLoop.runGame(1);
+	    	  createImage(frame);
+	    	  frame.remove(shuffleDealButton);
+	      }
+	    });
+
+
+	}
+	
+	public static void createImage(JFrame frame) {
 		// set card locations for each player
 		int cardHeight = screenSize.height * 1/7;
 		int cardWidth = screenSize.width * 1/20;
@@ -132,12 +178,10 @@ public class BufferedImageDisplay {
 		playersAll.add(player6); playersAll.add(player7); playersAll.add(player8); playersAll.add(player9); playersAll.add(player10);
 		
 		// Create Buffered Image
-		BufferedImageDisplay table2 = new BufferedImageDisplay();
 		BufferedImageDisplay cards2 = new BufferedImageDisplay();
 		BufferedImageDisplay flopCards2 = new BufferedImageDisplay();
 		BufferedImageDisplay turnCard2 = new BufferedImageDisplay();
 		BufferedImageDisplay riverCard2 = new BufferedImageDisplay();
-		BufferedImage table = table2.getImageFromString("C:\\Java_Programs\\Images\\Table.png");
 		BufferedImage[][] cards = cards2.getWCImageList();
 		BufferedImage[] flopCards = flopCards2.getFlopImageList();
 		BufferedImageDisplay cardStringTurn = new BufferedImageDisplay();
@@ -146,7 +190,7 @@ public class BufferedImageDisplay {
 		BufferedImage riverCard = riverCard2.getImageFromString(cardStringRiver.cardString(RunGameLoop.hand.getRiver()));
 		
 		// Create JLabel
-		JLabel Jtable = new JLabel(new StretchIcon(table));
+		
 		JLabel[][] Jcards = new JLabel[Poker.numberPlayers][2];
 		for (int i = 0; i < Poker.numberPlayers; i++) {
 			
@@ -160,8 +204,6 @@ public class BufferedImageDisplay {
 		}
 		JLabel JTurnCard = new JLabel(new StretchIcon(turnCard));
 		JLabel JRiverCard = new JLabel(new StretchIcon(riverCard));
-		
-
 
 		// Create JButtons for each player
 		JButton[] button = new JButton[Poker.numberPlayers];
@@ -171,37 +213,30 @@ public class BufferedImageDisplay {
 		JButton showFlopButton = new JButton();
 		JButton showTurnButton = new JButton();
 		JButton showRiverButton = new JButton();
-
+		JButton newGameButton = new JButton();
 		
-		// Create JFrame and add everything to it to display
-		JFrame frame = new JFrame("Live Poker Game");
-		
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setContentPane(Jtable);
-	    frame.setBackground(Color.white);
-	    frame.getContentPane().setPreferredSize(new Dimension(width, height));
-	    frame.pack();
-	    frame.setLocationRelativeTo(null);
 	    for(int i = 0; i < Poker.numberPlayers; i++) {
 	    		
 	    	Jcards[i][0].setLocation(playersAll.get(i).get(0), playersAll.get(i).get(1));
 	    	Jcards[i][0].setSize(cardWidth,  cardHeight);
-	   		frame.add(Jcards[i][0]);
-	   		Jcards[i][1].setLocation(playersAll.get(i).get(2), playersAll.get(i).get(3));
-	   		Jcards[i][1].setSize(cardWidth,  cardHeight);
-	   		frame.add(Jcards[i][1]);
+	    	frame.add(Jcards[i][0]);
+	    	Jcards[i][1].setLocation(playersAll.get(i).get(2), playersAll.get(i).get(3));
+	    	Jcards[i][1].setSize(cardWidth,  cardHeight);
+	    	frame.add(Jcards[i][1]);
 	    	button[i].setLocation(playersAll.get(i).get(2)-40, playersAll.get(i).get(1) + 100);
 	    	button[i].setSize(80, 20);
 	    	button[i].setFont(new Font("Arial", Font.PLAIN, 10));
 	    	button[i].setText("Player " + (i+1));
 	    	frame.add(button[i]);
-
 	    }
 	    showFlopButton.setLocation(380, 240);
 	    showFlopButton.setSize(150, 40);
 	    showFlopButton.setFont(new Font("Arial", Font.PLAIN, 15));
 	    showFlopButton.setText("Deal Flop");
 	    frame.add(showFlopButton);
+		  	frame.setResizable(false);
+		  	frame.setLayout(null);
+		  	frame.setVisible(true);
 	    
 	    // Display flop on click of button
 	    showFlopButton.addActionListener(new ActionListener()
@@ -279,16 +314,29 @@ public class BufferedImageDisplay {
 	    	  JRiverCard.setLocation(x, y);
 	    	  JRiverCard.setSize(cardWidth,  cardHeight);
 	    	  frame.add(JRiverCard);
-    		  frame.setResizable(false);
+	    	  newGameButton.setLocation(380, 320);
+	    	  newGameButton.setSize(150, 40);
+	    	  newGameButton.setFont(new Font("Arial", Font.PLAIN, 15));
+	    	  newGameButton.setText("Deal New Game");
+  		      frame.add(newGameButton);   
+  		      frame.setResizable(false);
     		  frame.setLayout(null);
     		  frame.setVisible(true);
     		  frame.remove(showRiverButton);
 	      }
 	    });
 	    
-	    frame.setResizable(false);
-	    frame.setLayout(null);
-	    frame.setVisible(true);
+	    // Display river on click of button
+	    newGameButton.addActionListener(new ActionListener()
+	    {
+	      public void actionPerformed(ActionEvent e)
+	      {
+	    	  // ReRun everything now
+	    	  frame.dispose();
+	    	  shuffleDealImage();
+	    	  
+	      }
+	    });
 	}
 	
 
